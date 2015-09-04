@@ -1,0 +1,30 @@
+{
+  "name": "glint-plugin-wrap-i18n",
+  "version": "1.0.0",
+  "description": "adds `locale` function to the server and prefixes the containers id's with the `locale` + '-'",
+  "main": "index.js",
+  "browser": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/glintcms/glint-plugin-wrap-i18n.git"
+  },
+  "author": "Andi Neck",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^2.1.2",
+    "is-browser": "^2.0.1"
+  },
+  "bugs": {
+    "url": "https://github.com/glintcms/glint-plugin-wrap-i18n/issues"
+  },
+  "homepage": "https://github.com/glintcms/glint-plugin-wrap-i18n",
+  "keywords": [
+    "glint",
+    "plugin",
+    "wrap",
+    "i18n"
+  ]
+}
