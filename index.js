@@ -19,12 +19,12 @@ module.exports = function(o) {
   o = defaults(o, c);
   o.locale = o.locale || 'locale';
   o.path = o.path || 'path';
-  o.pattern = o.pattern || '([a-zA-Z]{1,3}(?:-(?:[a-zA-Z0-9]{2})){0,1})';
 
   var attribute = o.attribute || 'locale';
 
   plugin.api = 'wrap-plugin';
   function plugin(wrap) {
+
 
     function attachHandlers(containers) {
 
@@ -63,17 +63,16 @@ module.exports = function(o) {
           var obj = args[pos]; // object: 4th argument
           var id = args[pos - 1]; // id: 3rd argument
 
-          //extract locale from id e.g. de-ch-home-alone -> de-ch
-          var locale;
-          var pattern = new RegExp('^' + o.pattern + '', 'i');
-          if (pattern.test(id)) {
-            locale = RegExp.$1;
-          }
+          // get locale
+          var locale = wrap.getLocale();
           if (locale) {
             obj[o.locale] = locale;
             obj[o.path] = id.replace(locale + '-', '');
 
+          } else {
+            console.error('wrap-i18n: on adapter-pre-save, locale not found');
           }
+
           debug('adatper pre-save, locale:', obj[o.locale], ', path:', obj[o.path]);
         });
 
@@ -113,16 +112,26 @@ module.exports = function(o) {
       return wrap['_' + attribute];
     };
 
-    var handlers = false;
-    wrap.on('pre-load', function() {
+    // TODO browser: make translations editable (inline) e.g. with i18n="<key>"
 
-      // attach container save handler once
-      // the handlers are attached on the wrap's pre-load event,
-      // because the containers might not be available during this plugins instatiation.
-      if (!handlers) attachHandlers(wrap.containers);
-      handlers = true;
+    /**
+     * initializes wrap for i18n.
+     *
+     * @param i18n internationalization object with properties: locale, locales, translate
+     * @returns {wrap} Object
+     */
+    wrap.i18n = function(i18n) {
+      debug('i18n', i18n.locale, i18n.locales, typeof i18n.translate !== 'undefined');
+      if (!i18n) {
+        console.error('no i18n object provided', i18n);
+        return wrap;
+      }
+      wrap.setLocale(i18n.locale);
+      wrap.locales = i18n.locales;
+      wrap.translate = i18n.translate;
 
-    });
+      return wrap;
+    }
 
     wrap.on('post-load', function(content) {
       debug('post-load', o.translate, !isBrowser, typeof wrap.translate !== 'undefined');
@@ -144,26 +153,16 @@ module.exports = function(o) {
       }
     })
 
-    // TODO browser: make translations editable (inline) e.g. with i18n="<key>"
+    var handlers = false;
+    wrap.on('pre-load', function() {
 
-    /**
-     * initializes wrap for i18n.
-     *
-     * @param i18n internationalization object with properties: locale, locales, translate
-     * @returns {wrap} Object
-     */
-    wrap.i18n = function(i18n) {
-      debug('i18n', i18n.locale, i18n.locales, typeof i18n.translate !== 'undefined');
-      if (!i18n) {
-        console.error('no i18n object provided', i18n);
-        return wrap;
-      }
-      wrap.setLocale(i18n.locale);
-      wrap.locales = i18n.locales;
-      wrap.translate = i18n.translate;
+      // attach container save handler once
+      // the handlers are attached on the wrap's pre-load event,
+      // because the containers might not be available during this plugins instatiation.
+      if (!handlers) attachHandlers(wrap.containers);
+      handlers = true;
 
-      return wrap;
-    }
+    });
 
   }
 

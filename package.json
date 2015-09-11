@@ -14,7 +14,9 @@
   "author": "Andi Neck",
   "license": "MIT",
   "dependencies": {
-    "debug": "^2.1.2",
+    "debug": "^2.2.0",
+    "defaults": "^1.0.2",
+    "glint-i18n": "^1.0.0",
     "is-browser": "^2.0.1"
   },
   "bugs": {
