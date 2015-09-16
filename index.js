@@ -1,11 +1,10 @@
 /**
  * Module dependencies.
  */
-
+var debug = require('debug')('glint-plugin-wrap-i18n');
 var c = require('glint-i18n/config');
 var defaults = require('defaults');
 var isBrowser = require('is-browser');
-var debug = require('debug')('glint:plugin-wrap-i18n');
 
 /**
  *  Wrap locale Plugin
