@@ -1,6 +1,6 @@
 {
   "name": "glint-plugin-wrap-i18n",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "adds `locale` function to the server and prefixes the containers id's with the `locale` + '-'",
   "main": "index.js",
   "browser": "index.js",
