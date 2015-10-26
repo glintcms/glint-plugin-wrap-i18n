@@ -120,17 +120,17 @@ module.exports = function(o) {
      * @returns {wrap} Object
      */
     wrap.i18n = function(i18n) {
-      debug('i18n', i18n.locale, i18n.locales, typeof i18n.translate !== 'undefined');
       if (!i18n) {
         console.error('no i18n object provided', i18n);
         return wrap;
       }
+      debug('i18n', i18n.locale, i18n.locales);
       wrap.setLocale(i18n.locale);
       wrap.locales = i18n.locales;
       wrap.translate = i18n.translate;
 
       return wrap;
-    }
+    };
 
     wrap.on('post-load', function(content) {
       debug('post-load', o.translate, !isBrowser, typeof wrap.translate !== 'undefined');
@@ -150,7 +150,7 @@ module.exports = function(o) {
         content[o.translate] = translated || text;
 
       }
-    })
+    });
 
     var handlers = false;
     wrap.on('pre-load', function() {
